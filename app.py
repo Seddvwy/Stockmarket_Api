@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import pandas_ta as ta
 import tensorflow as tf
 from keras.models import load_model
@@ -422,6 +422,26 @@ async def get_top_ten():
     top_ten = get_top_10_investment_opportunities(ranked_stocks)
     top_ten_json = [(symbol, float(probability)) for symbol, (prediction, probability) in top_ten]
     return jsonify({'top_ten': top_ten_json})
+
+
+@app.route('/predict_stock', methods=['GET'])
+async def predict_stock():
+    stock_symbol = request.args.get('symbol')
+    
+    if stock_symbol is None or stock_symbol not in stock_symbols:
+        return jsonify({'error': 'Invalid stock symbol'}), 400
+
+    csv_path = os.path.join("data", f"{stock_symbol}_data.csv")
+    if not os.path.exists(csv_path):
+        return jsonify({'error': 'Data not available for the specified stock'}), 404
+
+    data = pd.read_csv(csv_path)
+
+    prediction, probability = predict_tomorrow_movement(stock_symbol, trained_models[stock_symbol], data)
+
+    return jsonify({'symbol': stock_symbol, 'prediction': prediction, 'probability': float(probability)})
+
+
 
 
 # Function to update data from API and store in CSV files
