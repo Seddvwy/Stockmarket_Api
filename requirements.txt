@@ -9,6 +9,7 @@ Flask
 Flask-APScheduler==1.13.1
 Flask-RESTful==0.3.10
 Flask[async]
+Flask-Cors
 jupyter==1.0.0
 keras==2.15.0
 numpy==1.26.0

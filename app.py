@@ -10,8 +10,10 @@ import aiohttp
 import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 stock_symbols = [
   "4310.SR",
