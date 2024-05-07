@@ -15,7 +15,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-saudia = [
+SAU = [
     "4310.SR", "2222.SR", "2380.SR", "2381.SR", "4030.SR", "4200.SR", "1201.SR", "1202.SR", "1210.SR", "1211.SR", 
     "1301.SR", "1304.SR", "1320.SR", "1321.SR", "1322.SR", "2001.SR", "2010.SR", "2020.SR", "2060.SR", "2090.SR", 
     "2150.SR", "2170.SR", "2180.SR", "2200.SR", "2210.SR", "2220.SR", "2223.SR", "2240.SR", "2250.SR", "2290.SR", 
@@ -56,7 +56,7 @@ UK = [
     "MANU", "AY", "DAVA", "VTEX", "VRNA", "AUTL", "CNTA", "GSM", "BCYC", "BSIG"
 ]
 
-Australian = [
+AUS = [
     "BHP", "CBA", "RIO", "CSL", "WBC", "WES", "WDS", "RMD", "TLS", "WOW", "ALL", "JHX", "COL", "SUN", "AMC",
     "ORG", "IAG", "FPH", "MIN", "CAR", "ASX", "SOL", "TLC", "APA", "PME", "BSL"
 ]
@@ -259,10 +259,10 @@ async def predict():
         predictions = {symbol: {'prediction': prediction, 'probability': float(probability)} for symbol, (prediction, probability) in (await predict_tomorrow_movement_for_symbols(trained_models)).items() if symbol in USA}
     elif category == 'uk':
         predictions = {symbol: {'prediction': prediction, 'probability': float(probability)} for symbol, (prediction, probability) in (await predict_tomorrow_movement_for_symbols(trained_models)).items() if symbol in UK}
-    elif category == 'australian':
-        predictions = {symbol: {'prediction': prediction, 'probability': float(probability)} for symbol, (prediction, probability) in (await predict_tomorrow_movement_for_symbols(trained_models)).items() if symbol in Australian}
-    elif category == 'saudia':
-        predictions = {symbol: {'prediction': prediction, 'probability': float(probability)} for symbol, (prediction, probability) in (await predict_tomorrow_movement_for_symbols(trained_models)).items() if symbol in saudia}
+    elif category == 'aus':
+        predictions = {symbol: {'prediction': prediction, 'probability': float(probability)} for symbol, (prediction, probability) in (await predict_tomorrow_movement_for_symbols(trained_models)).items() if symbol in AUS}
+    elif category == 'sau':
+        predictions = {symbol: {'prediction': prediction, 'probability': float(probability)} for symbol, (prediction, probability) in (await predict_tomorrow_movement_for_symbols(trained_models)).items() if symbol in SAU}
 
     else : 
         predictions = await predict_tomorrow_movement_for_symbols(trained_models)
@@ -300,10 +300,10 @@ async def get_top_ten():
         predictions = {symbol: prediction for symbol, prediction in predictions.items() if symbol in USA}
     elif category == 'uk':
         predictions = {symbol: prediction for symbol, prediction in predictions.items() if symbol in UK}
-    elif category == 'australian':
-        predictions = {symbol: prediction for symbol, prediction in predictions.items() if symbol in Australian}
-    elif category == 'saudia':
-        predictions = {symbol: prediction for symbol, prediction in predictions.items() if symbol in saudia}
+    elif category == 'aus':
+        predictions = {symbol: prediction for symbol, prediction in predictions.items() if symbol in AUS}
+    elif category == 'sau':
+        predictions = {symbol: prediction for symbol, prediction in predictions.items() if symbol in SAU}
     else:
         predictions = predictions
 
