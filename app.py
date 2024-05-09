@@ -95,7 +95,5 @@ async def get_top_ten():
 
 
 if __name__ == '__main__':
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(fetch_all_data())
     utils.start_scheduler()
-    app.run(debug=False)
+    app.run(debug=False, host='0.0.0.0', port=8000)

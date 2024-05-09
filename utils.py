@@ -130,32 +130,6 @@ def load_quantized_models(model_dir="tflite_models"):
 trained_models = load_quantized_models()
 
 
-# async def fetch_data_async(symbol, api_key='rJbxLKBGH8LBfX8zWtgB8FczEIUpkUQ7',
-#                            base_url='https://financialmodelingprep.com/api/v3'):
-#     endpoint = f'{base_url}/historical-price-full/{symbol}?apikey={api_key}'
-#     async with aiohttp.ClientSession() as session:
-#         async with session.get(endpoint) as response:
-#             if response.status == 200:
-#                 try:
-#                     data = await response.json()
-#                     historical_data = data['historical']
-#                     data_list = [{'Date': item['date'], 'Open': item['open'], 'High': item['high'], 'Low': item['low'],
-#                                   'Close': item['close'], 'AdjClose': item['adjClose'], 'Volume': item['volume']} for item
-#                                  in historical_data]
-#                     df = pd.DataFrame(data_list)
-#                     df = df[::-1].reset_index(drop=True)
-#                     # Store data into CSV
-#                     csv_path = os.path.join("data", f"{symbol}_data.csv")
-#                     df.to_csv(csv_path, index=False)
-#                     return df
-#                 except KeyError:
-#                     print(f'KeyError: "historical" key not found in response for symbol {symbol}')
-#                     return None
-#             else:
-#                 print(f'Failed to retrieve data for {symbol}')
-#                 return None
-
-
 async def fetch_data_async(symbol, api_key='rJbxLKBGH8LBfX8zWtgB8FczEIUpkUQ7',
                            base_url='https://financialmodelingprep.com/api/v3'):
     endpoint = f'{base_url}/historical-price-full/{symbol}?apikey={api_key}'
@@ -252,12 +226,6 @@ def rank_stocks(predictions):
 def get_top_10_investment_opportunities(ranked_stocks):
     return ranked_stocks[:10]
 
-# Function to update data from API and store in CSV files
-# async def update_data():    
-#     print("Updating data from API...")
-#     await fetch_all_data()
-#     print("Data updated.")
-
 def update_data():    
     print("Updating data from API...")
     asyncio.run(fetch_all_data())
@@ -267,11 +235,5 @@ def update_data():
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    # scheduler.add_job(id='update_data', func=update_data, trigger=CronTrigger(hour=0, minute=0))
-    scheduler.add_job(id='update_data', func=update_data, trigger=IntervalTrigger(seconds=63))
+    scheduler.add_job(id='update_data', func=update_data, trigger=CronTrigger(hour='*/5'))
     scheduler.start()
-
-# def run_main():
-#     loop = asyncio.new_event_loop()  
-#     asyncio.set_event_loop(loop) 
-#     loop.run_until_complete(update_data()) 
